@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Axiom of Choice — Equivalents, Consequences, and Controversies</title>
+<meta name="description" content="Single-file explainer of the Axiom of Choice (AC), its equivalents (Well-Ordering, Zorn), major consequences, and controversies.">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+<style>
+  :root{
+    --bg:#0B0F19; --ink:#E6EAF2; --muted:#94A3B8; --line:rgba(255,255,255,.12);
+    --card:#0F1524; --accent:#A4E8FF; --accent2:#7dd3fc; --warn:#fca5a5; --ok:#86efac;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji"}
+  a{color:var(--accent)}
+  header{position:sticky;top:0;background:linear-gradient(180deg,rgba(11,15,25,.95),rgba(11,15,25,.7) 60%,rgba(11,15,25,0));backdrop-filter:blur(6px);z-index:10;border-bottom:1px solid var(--line)}
+  .wrap{max-width:900px;margin:0 auto;padding:20px}
+  .title{margin:6px 0 2px;font-weight:800;letter-spacing:.2px;font-size:28px}
+  .subtitle{margin:0;color:var(--muted)}
+  .meta{margin:8px 0 0;color:var(--muted);font-size:14px}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  button{background:#122038;color:var(--ink);border:1px solid var(--line);padding:8px 12px;border-radius:10px;cursor:pointer}
+  button:hover{background:#0f1a2e}
+  main{padding:24px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin:18px 0}
+  h2{margin:22px 0 10px 0;font-size:22px}
+  h3{margin:18px 0 8px 0;font-size:18px}
+  .kws{color:var(--muted);font-size:14px}
+  .theorem{background:#0c182e;border:1px solid #10203e;border-radius:10px;padding:14px}
+  .equiv{border-left:3px solid var(--accent2);padding:8px 12px;margin:8px 0;background:rgba(125,211,252,.06)}
+  .proof{border-left:3px solid var(--accent);padding:8px 12px;margin:8px 0;background:rgba(164,232,255,.06)}
+  .remark{color:#7dd3fc;font-style:italic}
+  .fig{background:#0b1426;border:1px solid #132243;border-radius:12px;padding:14px;margin:12px 0}
+  .fig .cap{color:var(--muted);font-size:14px;margin-top:8px}
+  .list{margin:.2rem 0 0 1rem}
+  .comet{position:relative;height:8px;background:linear-gradient(90deg,rgba(164,232,255,.2),rgba(125,211,252,.05) 60%,transparent)}
+  .comet:after{content:"";position:absolute;right:0;top:-6px;width:10px;height:10px;border-radius:50%;background:#e6f6ff;box-shadow:-50px 8px 0 0 rgba(164,232,255,.22), -90px 16px 0 0 rgba(164,232,255,.13)}
+  code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;background:rgba(255,255,255,.06);padding:.1rem .35rem;border-radius:6px;border:1px solid var(--line)}
+  footer{color:var(--muted);font-size:14px;padding:28px 0;border-top:1px solid var(--line)}
+  @media print {
+    header,.comet,.btns{display:none !important}
+    body{background:#fff;color:#000}
+    .card,.fig{border:1px solid #ddd;background:#fff;break-inside:avoid}
+    a{color:#000;text-decoration:none}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="title">Axiom of Choice (AC)</div>
+    <p class="subtitle">Equivalents, Consequences, and Controversies — <span style="opacity:.9">with HTML-escaped symbols</span></p>
+    <p class="meta">Author: Tristan White • Date: October 1, 2025</p>
+    <div class="btns">
+      <button onclick="window.print()">Print / Save as PDF</button>
+      <button onclick="document.documentElement.scrollTo({top:0,left:0,behavior:'smooth'})">Back to Top</button>
+    </div>
+    <div class="comet"></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="card">
+    <h2 id="abstract">Abstract</h2>
+    <p>The Axiom of Choice (AC) states that for any family of nonempty sets, there exists a choice function selecting one element from each set. In ZF set theory, AC is independent; in ZFC, it yields wide-ranging equivalents: Well-Ordering Theorem, Zorn’s Lemma, Ultrafilter Lemma (weaker), Tychonoff’s Theorem for compactness, existence of Hamel bases, non-measurable sets, and paradoxical decompositions. Symbols below are HTML-escaped (&forall;, &exists;, &in;, &subseteq;, &empty;, &ne;, &aleph;).</p>
+    <p class="kws"><strong>Keywords:</strong> AC, ZF/ZFC, Well-Ordering, Zorn’s Lemma, Tychonoff, Ultrafilter, Hamel basis, Vitali set, Banach–Tarski</p>
+  </section>
+
+  <section class="card">
+    <h2>Contents</h2>
+    <ul class="list">
+      <li><a href="#statement">1. Formal Statement (escaped)</a></li>
+      <li><a href="#equivalents">2. Canonical Equivalents</a></li>
+      <li><a href="#consequences">3. Key Consequences</a></li>
+      <li><a href="#independence">4. Independence &amp; Fragments</a></li>
+      <li><a href="#controversies">5. Controversies &amp; Philosophy</a></li>
+      <li><a href="#figures">6. Figures (inline SVG)</a></li>
+      <li><a href="#refs">References</a></li>
+    </ul>
+  </section>
+
+  <section id="statement" class="card">
+    <h2>1. Formal Statement (escaped)</h2>
+    <div class="theorem">
+      <strong>Axiom of Choice (AC).</strong>
+      <p>If <code>&mathcal;F</code> is a family of nonempty sets (i.e., <code>&forall;A &in; &mathcal;F, A &ne; &empty;</code>), then there exists a function <code>c: &mathcal;F &rarr; &bigcup &mathcal;F</code> such that <code>&forall;A &in; &mathcal;F</code>, <code>c(A) &in; A</code>.</p>
+    </div>
+    <div class="remark">Equivalent forms often use pairwise disjoint families or collections indexed by a set <code>I</code>: &ldquo;Given <code>(A<sub>i</sub>)<sub>i &in; I</sub></code> with <code>A<sub>i</sub> &ne; &empty;</code>, &exist; a function <code>c</code> with <code>c(i) &in; A<sub>i</sub></code>.&rdquo;</div>
+  </section>
+
+  <section id="equivalents" class="card">
+    <h2>2. Canonical Equivalents</h2>
+
+    <div class="equiv"><strong>Well-Ordering Theorem.</strong> Every set can be well-ordered.</div>
+    <div class="proof"><strong>Sketch (AC &rArr; Well-Ordering).</strong> Using AC, transfinite recursion picks a &ldquo;next&rdquo; element until the set is exhausted; the order of picks gives a well-order. Conversely, a global well-order gives choices.</div>
+
+    <div class="equiv"><strong>Zorn&rsquo;s Lemma.</strong> If a nonempty partially ordered set <code>(P,&le;)</code> has the property that every chain has an upper bound, then <code>P</code> has a maximal element.</div>
+    <div class="proof"><strong>Sketch (AC &xrArr; Zorn).</strong> Apply AC to extend chains to maximal ones; maximal chain yields maximal element by upper bounds. Zorn &xrArr; AC via well-ordering of choice sets in a suitable poset.</div>
+
+    <div class="equiv"><strong>Hausdorff Maximal Principle.</strong> Every partially ordered set has a maximal chain.</div>
+
+    <div class="equiv"><strong>Tychonoff&rsquo;s Theorem (compactness).</strong> The product of compact spaces is compact (full generality is equivalent to AC).</div>
+
+    <div class="equiv"><strong>Ultrafilter Lemma (UFL).</strong> Every filter on a set extends to an ultrafilter (weaker than full AC, but stronger than just ZF).</div>
+  </section>
+
+  <section id="consequences" class="card">
+    <h2>3. Key Consequences</h2>
+    <ul class="list">
+      <li><strong>Hamel bases.</strong> Every vector space over a field has a basis (e.g., <code>&#8477;</code> as a vector space over <code>&#8472;</code> has a basis; nonconstructive).</li>
+      <li><strong>Zorn-driven existence.</strong> Maximal ideals in rings; algebraic closures; Hahn–Banach extension; transfinite bases, etc.</li>
+      <li><strong>Set-theoretic pathologies.</strong> <em>Vitali sets</em> (non-measurable subsets of <code>[0,1]</code>), and the <em>Banach–Tarski paradox</em> (paradoxical decompositions in <code>&#8477;<sup>3</sup></code>).</li>
+      <li><strong>Cardinal arithmetic.</strong> With AC, every set can be well-ordered; cardinals are initial ordinals; comparisons of size simplify.</li>
+    </ul>
+  </section>
+
+  <section id="independence" class="card">
+    <h2>4. Independence &amp; Fragments</h2>
+    <ul class="list">
+      <li><strong>Independence.</strong> AC is independent of ZF (cannot be proven or refuted from ZF alone). ZFC accepts AC.</li>
+      <li><strong>Dependent Choice (DC).</strong> A weaker form: permits countable choice along a relation; sufficient for much of analysis and measure theory.</li>
+      <li><strong>Countable Choice (CC).</strong> Choice for countable families; weaker than DC.</li>
+      <li><strong>UFL vs AC.</strong> Ultrafilter Lemma is strictly weaker than AC but implies Tychonoff for products of compact <em>Hausdorff</em> spaces.</li>
+    </ul>
+  </section>
+
+  <section id="controversies" class="card">
+    <h2>5. Controversies &amp; Philosophy</h2>
+    <p>Objections to AC often target nonconstructive existence (&ldquo;there exists but no explicit example&rdquo;) and paradoxical outcomes (non-measurable sets, Banach–Tarski). Constructivists or predicativists may reject full AC, preferring DC/CC or working in alternative foundations. Nevertheless, AC is standard in mainstream mathematics due to its unifying power.</p>
+    <p class="remark">With AC, &forall; sets admit a well-order, so there exists a well-order of <code>&#8477;</code>; however, no explicit definable well-order of <code>&#8477;</code> is known in ZFC alone.</p>
+  </section>
+
+  <section id="figures" class="card">
+    <h2>6. Figures (inline SVG)</h2>
+
+    <div class="fig">
+      <svg viewBox="0 0 520 170" width="100%" aria-label="AC: picking one from each nonempty set">
+        <rect x="0" y="0" width="520" height="170" fill="#081124" rx="10"/>
+        <!-- three baskets (sets) -->
+        <g>
+          <rect x="40" y="30" width="120" height="100" rx="10" fill="none" stroke="#4a688a" />
+          <rect x="200" y="30" width="120" height="100" rx="10" fill="none" stroke="#4a688a" />
+          <rect x="360" y="30" width="120" height="100" rx="10" fill="none" stroke="#4a688a" />
+          <text x="100" y="25" fill="#cde3ff" font-size="12" text-anchor="middle">A<sub>1</sub> &ne; &empty;</text>
+          <text x="260" y="25" fill="#cde3ff" font-size="12" text-anchor="middle">A<sub>2</sub> &ne; &empty;</text>
+          <text x="420" y="25" fill="#cde3ff" font-size="12" text-anchor="middle">A<sub>3</sub> &ne; &empty;</text>
+          <!-- elements -->
+          <circle cx="85" cy="70" r="8" stroke="#7aa2ff" fill="none"/>
+          <circle cx="120" cy="95" r="8" stroke="#7aa2ff" fill="none"/>
+          <circle cx="240" cy="60" r="8" stroke="#7aa2ff" fill="none"/>
+          <circle cx="285" cy="100" r="8" stroke="#7aa2ff" fill="none"/>
+          <circle cx="395" cy="65" r="8" stroke="#7aa2ff" fill="none"/>
+          <circle cx="445" cy="95" r="8" stroke="#7aa2ff" fill="none"/>
+          <!-- choices -->
+          <g stroke="#86efac" stroke-width="2">
+            <line x1="100" y1="130" x2="85" y2="78"/>
+            <line x1="260" y1="130" x2="285" y2="100"/>
+            <line x1="420" y1="130" x2="395" y2="65"/>
+          </g>
+          <text x="260" y="150" fill="#9fb7d3" font-size="12" text-anchor="middle">Choice function c: picks one in each A<sub>i</sub></text>
+        </g>
+      </svg>
+      <div class="cap">Figure 1 — Axiom of Choice as &ldquo;one pick per nonempty set&rdquo;.</div>
+    </div>
+
+    <div class="fig">
+      <svg viewBox="0 0 520 200" width="100%" aria-label="Zorn's Lemma intuition">
+        <rect x="0" y="0" width="520" height="200" fill="#081124" rx="10"/>
+        <!-- branching poset -->
+        <g stroke="#7dd3fc" stroke-width="2">
+          <line x1="260" y1="30"  x2="200" y2="70"/>
+          <line x1="260" y1="30"  x2="320" y2="70"/>
+          <line x1="200" y1="70"  x2="170" y2="110"/>
+          <line x1="200" y1="70"  x2="230" y2="110"/>
+          <line x1="320" y1="70"  x2="290" y2="110"/>
+          <line x1="320" y1="70"  x2="350" y2="110"/>
+          <line x1="170" y1="110" x2="160" y2="150"/>
+          <line x1="230" y1="110" x2="240" y2="150"/>
+          <line x1="290" y1="110" x2="300" y2="150"/>
+          <line x1="350" y1="110" x2="360" y2="150"/>
+        </g>
+        <!-- highlight chain and maximal element -->
+        <g stroke="#86efac" stroke-width="3">
+          <line x1="260" y1="30"  x2="320" y2="70"/>
+          <line x1="320" y1="70"  x2="350" y2="110"/>
+          <line x1="350" y1="110" x2="360" y2="150"/>
+        </g>
+        <circle cx="360" cy="150" r="7" fill="none" stroke="#86efac" stroke-width="3"/>
+        <text x="260" y="185" fill="#9fb7d3" font-size="12" text-anchor="middle">Chains have upper bounds &rArr; a maximal element exists</text>
+      </svg>
+      <div class="cap">Figure 2 — Zorn&rsquo;s Lemma: every chain has an upper bound &rArr; a maximal element.</div>
+    </div>
+
+    <div class="fig">
+      <svg viewBox="0 0 520 200" width="100%" aria-label="Well-order ladder">
+        <rect x="0" y="0" width="520" height="200" fill="#081124" rx="10"/>
+        <!-- ordinal ladder -->
+        <g>
+          <rect x="80" y="150" width="80" height="12" fill="none" stroke="#4a688a"/>
+          <rect x="180" y="130" width="80" height="12" fill="none" stroke="#4a688a"/>
+          <rect x="280" y="105" width="80" height="12" fill="none" stroke="#4a688a"/>
+          <rect x="380" y="70"  width="80" height="12" fill="none" stroke="#4a688a"/>
+          <text x="120" y="146" fill="#cde3ff" font-size="11" text-anchor="middle">&omega;</text>
+          <text x="220" y="126" fill="#cde3ff" font-size="11" text-anchor="middle">&omega;+1</text>
+          <text x="320" y="101" fill="#cde3ff" font-size="11" text-anchor="middle">&omega;&middot;2</text>
+          <text x="420" y="66"  fill="#cde3ff" font-size="11" text-anchor="middle">&omega;<sup>2</sup></text>
+          <text x="260" y="185" fill="#9fb7d3" font-size="12" text-anchor="middle">Well-order: every nonempty subset has a least element</text>
+        </g>
+      </svg>
+      <div class="cap">Figure 3 — Well-Ordering Theorem: every set admits a well-order (AC-equivalent).</div>
+    </div>
+  </section>
+
+  <section id="refs" class="card">
+    <h2>References</h2>
+    <ul>
+      <li>G. Cantor, <em>Beiträge zur Begründung der transfiniten Mengenlehre</em> (1895–97).</li>
+      <li>E. Zermelo, &ldquo;Beweis, dass jede Menge wohlgeordnet werden kann&rdquo; (1904).</li>
+      <li>M. Zorn, &ldquo;A remark on method in transfinite algebra&rdquo; (1935).</li>
+      <li>K. Gödel, <em>The Consistency of the Axiom of Choice and of the GCH</em> (1940).</li>
+      <li>J. Kelley, <em>General Topology</em>; K. Devlin, <em>The Joy of Sets</em>.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      © 2025 Tristan White. Single-file HTML. No trackers. Symbols HTML-escaped (&forall;, &exists;, &in;, &subseteq;, &empty;, &ne;, &aleph;).
+    </div>
+  </footer>
+</main>
+
+<script>
+  // no external scripts; this is intentionally minimal
+</script>
+</body>
+</html>
