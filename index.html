@@ -1,23 +1,36 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-page="choice">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Axiom of Choice & Consequences — choice.plnt.earth</title>
-<meta name="description" content="Axiom of Choice (AC), its equivalents, consequences, Banach–Tarski, and open frontiers. Single-file HTML.">
+<meta name="description" content="Axiom of Choice (AC), its equivalents, consequences, Banach–Tarski, and open frontiers (CH, definable well-orders, AD, large cardinals). Single-file HTML with inline SVG diagrams and a mini-site top-nav.">
 <style>
   :root{
     --bg:#0B0F19; --ink:#E6EAF2; --muted:#94A3B8; --line:rgba(255,255,255,.12);
-    --card:#0F1524; --accent:#A4E8FF; --accent2:#7dd3fc; --warn:#fca5a5; --ok:#86efac;
+    --card:#0F1524; --accent:#A4E8FF; --accent2:#7dd3fc; --warn:#fca5a5; --ok:#86efac; --note:#fde68a;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial}
-  a{color:var(--accent)}
-  header{position:sticky;top:0;background:linear-gradient(180deg,rgba(11,15,25,.95),rgba(11,15,25,.7) 60%,rgba(11,15,25,0));backdrop-filter:blur(6px);border-bottom:1px solid var(--line);z-index:10}
+  a{color:var(--accent);text-decoration:none}
+
+  /* ===== Top Nav (mini-site) ===== */
+  .sitebar{position:sticky;top:0;z-index:20;background:rgba(11,15,25,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .sitebar .wrap{display:flex;align-items:center;justify-content:space-between;padding:10px 20px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#A4E8FF,#7dd3fc)}
+  nav ul{display:flex;gap:8px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+  nav a{display:inline-block;padding:8px 12px;border-radius:10px;border:1px solid var(--line);color:var(--ink)}
+  nav a:hover{background:rgba(164,232,255,.08)}
+  nav a.active{background:rgba(164,232,255,.14);border-color:rgba(164,232,255,.35)}
+  .navnote{color:var(--muted);font-size:12px;margin-left:10px}
+
   .wrap{max-width:900px;margin:0 auto;padding:20px}
-  .title{font-size:28px;font-weight:800}
-  .subtitle{color:var(--muted);margin:4px 0}
-  .meta{font-size:14px;color:var(--muted)}
+  header .title{font-size:28px;font-weight:800}
+  header .subtitle{color:var(--muted);margin:4px 0}
+  header .meta{font-size:14px;color:var(--muted)}
+  .comet{height:6px;background:linear-gradient(90deg,rgba(164,232,255,.25),rgba(125,211,252,.05) 70%,transparent)}
+
   .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin:18px 0}
   h2{margin:22px 0 10px 0;font-size:22px}
   h3{margin:18px 0 8px 0;font-size:18px}
@@ -26,16 +39,37 @@
   .proof{border-left:3px solid var(--accent);padding:8px 12px;background:rgba(164,232,255,.06);margin:10px 0}
   .remark{color:#7dd3fc;font-style:italic;margin-top:8px}
   .list{margin:.2rem 0 0 1rem}
-  .comet{height:6px;background:linear-gradient(90deg,rgba(164,232,255,.25),rgba(125,211,252,.05) 70%,transparent)}
+  .fig{background:#0b1426;border:1px solid #132243;border-radius:12px;padding:14px;margin:12px 0}
+  .fig .cap{color:var(--muted);font-size:13px;margin-top:6px}
+  .tag{display:inline-block;font-size:12px;color:#0b1324;background:var(--note);padding:.15rem .45rem;border-radius:6px;margin-left:.35rem}
+
   footer{color:var(--muted);font-size:14px;padding:28px 0;border-top:1px solid var(--line)}
+
   @media print {
-    header,.comet{display:none!important}
+    .sitebar,.comet{display:none!important}
     body{background:#fff;color:#000}
-    .card{border:1px solid #ccc;background:#fff;break-inside:avoid}
+    .card,.fig{border:1px solid #ccc;background:#fff;break-inside:avoid}
+    a{color:#000;text-decoration:none}
   }
 </style>
 </head>
 <body>
+
+<!-- ===== Mini-site Top Nav ===== -->
+<div class="sitebar">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span><span>PLNT • Infinity</span></div>
+    <nav aria-label="Site">
+      <ul>
+        <!-- EDIT these hrefs to your real domains/paths -->
+        <li><a id="nav-cantor" href="https://cantor.plnt.earth/">Cantor Infinity</a></li>
+        <li><a id="nav-choice" href="https://choice.plnt.earth/">Axiom of Choice</a></li>
+        <li><a id="nav-banach" href="https://banach.plnt.earth/">Banach–Tarski</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
 <header>
   <div class="wrap">
     <div class="title">Axiom of Choice (AC)</div>
@@ -126,15 +160,109 @@
   <section id="next-problems" class="card">
     <h2>7. Next Problems &amp; Frontiers</h2>
     <p>Some of the deepest unsolved problems are independent of ZFC, meaning they cannot be decided by the current axioms. The &ldquo;solutions&rdquo; involve proposing new axioms or alternative frameworks.</p>
-    <div class="equiv"><strong>Continuum Hypothesis (CH).</strong> Is there a set with |&Nopf;| &lt; |X| &lt; |&Ropf;|? Gödel and Cohen proved CH is independent of ZFC.</div>
-    <div class="equiv"><strong>Definable Well-Orders of &Ropf;.</strong> AC guarantees a well-order, but no explicit definition is known in ZFC. Open in descriptive set theory.</div>
-    <div class="equiv"><strong>Determinacy Axioms (AD).</strong> Rejecting AC and adopting AD (&ldquo;every infinite game is determined&rdquo;) yields a world where all sets of reals are measurable and BT fails.</div>
-    <div class="equiv"><strong>Large Cardinals.</strong> Strong axioms of infinity (measurable, supercompact, etc.) extend ZFC and settle many questions indirectly. Which large cardinal axioms are &ldquo;true&rdquo; remains open.</div>
+
+    <div class="equiv"><strong>Continuum Hypothesis (CH).</strong> Is there a set with |&Nopf;| &lt; |X| &lt; |&Ropf;|? Gödel and Cohen proved CH is independent of ZFC. <span class="tag">Undecidable in ZFC</span></div>
+
+    <div class="fig" aria-label="Cardinal ladder sketch for CH">
+      <svg viewBox="0 0 820 150" width="100%" role="img">
+        <rect x="0" y="0" width="820" height="150" rx="10" fill="#081124"/>
+        <g stroke="#4a688a" stroke-width="2">
+          <line x1="80" y1="110" x2="200" y2="110"/>
+          <line x1="240" y1="90"  x2="360" y2="90"/>
+          <line x1="400" y1="70"  x2="520" y2="70"/>
+          <line x1="560" y1="50"  x2="680" y2="50"/>
+        </g>
+        <g fill="#cde3ff" font-size="13" text-anchor="middle">
+          <text x="140" y="128">&aleph;<tspan baseline-shift="sub">0</tspan> (|&Nopf;|)</text>
+          <text x="300" y="108">?</text>
+          <text x="460" y="88">?</text>
+          <text x="620" y="68">2<tspan baseline-shift="super">&aleph;<tspan baseline-shift="sub">0</tspan></tspan> (|&Ropf;|)</text>
+        </g>
+        <g fill="#fca5a5" font-size="20" text-anchor="middle">
+          <text x="220" y="104">?</text>
+          <text x="380" y="84">?</text>
+        </g>
+        <text x="410" y="135" fill="#9fb7d3" font-size="12" text-anchor="middle">Is there a rung strictly between &aleph;<tspan baseline-shift="sub">0</tspan> and 2<tspan baseline-shift="super">&aleph;<tspan baseline-shift="sub">0</tspan></tspan>?</text>
+      </svg>
+      <div class="cap">Figure 1 &mdash; CH asks whether a &ldquo;middle rung&rdquo; exists between countable and continuum cardinalities.</div>
+    </div>
+
+    <div class="equiv"><strong>Definable Well-Order of &Ropf;.</strong> AC ensures a well-order exists, but no explicit definable one is known in ZFC. <span class="tag">Open in ZFC</span></div>
+
+    <div class="fig" aria-label="Searchlight metaphor for definable well-order">
+      <svg viewBox="0 0 820 170" width="100%" role="img">
+        <rect x="0" y="0" width="820" height="170" rx="10" fill="#081124"/>
+        <line x1="60" y1="110" x2="760" y2="110" stroke="#4a688a" stroke-width="2"/>
+        <g>
+          <circle cx="120" cy="110" r="4" fill="#7aa2ff"/>
+          <circle cx="180" cy="110" r="4" fill="#7aa2ff"/>
+          <circle cx="245" cy="110" r="4" fill="#7aa2ff"/>
+          <circle cx="315" cy="110" r="4" fill="#7aa2ff"/>
+          <circle cx="400" cy="110" r="4" fill="#7aa2ff"/>
+          <circle cx="470" cy="110" r="4" fill="#7aa2ff"/>
+          <circle cx="545" cy="110" r="4" fill="#7aa2ff"/>
+          <circle cx="620" cy="110" r="4" fill="#7aa2ff"/>
+          <circle cx="700" cy="110" r="4" fill="#7aa2ff"/>
+        </g>
+        <polygon points="60,40 220,100 60,160" fill="rgba(252,165,165,.18)" stroke="#fca5a5" />
+        <text x="140" y="50" fill="#fca5a5" font-size="12">definable rule?</text>
+        <text x="410" y="140" fill="#9fb7d3" font-size="12" text-anchor="middle">AC: well-order exists &mdash; ZFC: no explicit definition known</text>
+      </svg>
+      <div class="cap">Figure 2 &mdash; A &ldquo;searchlight&rdquo; seeks an explicit definable well-order on &Ropf;.</div>
+    </div>
+
+    <div class="equiv"><strong>Determinacy Axioms (AD).</strong> Replace AC by AD (&ldquo;every infinite game is determined&rdquo;) and the world of sets of reals changes: all sets become measurable; Banach&ndash;Tarski fails. <span class="tag">Alternative to AC</span></div>
+
+    <div class="fig" aria-label="Infinite game tree (AD)">
+      <svg viewBox="0 0 820 220" width="100%" role="img">
+        <rect x="0" y="0" width="820" height="220" rx="10" fill="#081124"/>
+        <circle cx="410" cy="30" r="7" fill="none" stroke="#7dd3fc" stroke-width="2"/>
+        <line x1="410" y1="37" x2="300" y2="70" stroke="#7dd3fc" stroke-width="2"/>
+        <line x1="410" y1="37" x2="520" y2="70" stroke="#7dd3fc" stroke-width="2"/>
+        <circle cx="300" cy="70" r="6" fill="none" stroke="#86efac" stroke-width="2"/>
+        <circle cx="520" cy="70" r="6" fill="none" stroke="#86efac" stroke-width="2"/>
+        <line x1="300" y1="76" x2="240" y2="110" stroke="#7dd3fc" stroke-width="2"/>
+        <line x1="300" y1="76" x2="360" y2="110" stroke="#7dd3fc" stroke-width="2"/>
+        <line x1="520" y1="76" x2="460" y2="110" stroke="#7dd3fc" stroke-width="2"/>
+        <line x1="520" y1="76" x2="580" y2="110" stroke="#7dd3fc" stroke-width="2"/>
+        <circle cx="240" cy="110" r="5" fill="none" stroke="#fca5a5" stroke-width="2"/>
+        <circle cx="360" cy="110" r="5" fill="none" stroke="#fca5a5" stroke-width="2"/>
+        <circle cx="460" cy="110" r="5" fill="none" stroke="#fca5a5" stroke-width="2"/>
+        <circle cx="580" cy="110" r="5" fill="none" stroke="#fca5a5" stroke-width="2"/>
+        <text x="410" y="195" fill="#9fb7d3" font-size="12" text-anchor="middle">AD: every such infinite game has a winning strategy (Player I or II)</text>
+      </svg>
+      <div class="cap">Figure 3 &mdash; Determinacy reframes sets of reals via infinite games.</div>
+    </div>
+
+    <div class="equiv"><strong>Large Cardinals.</strong> Strong axioms of infinity (measurable, supercompact, etc.) extend ZFC and calibrate consistency strength. <span class="tag">Beyond ZFC</span></div>
+
+    <div class="fig" aria-label="Large cardinal strength tower">
+      <svg viewBox="0 0 820 220" width="100%" role="img">
+        <rect x="0" y="0" width="820" height="220" rx="10" fill="#081124"/>
+        <g>
+          <rect x="160" y="160" width="500" height="18" fill="none" stroke="#4a688a"/>
+          <rect x="180" y="135" width="460" height="18" fill="none" stroke="#4a688a"/>
+          <rect x="200" y="110" width="420" height="18" fill="none" stroke="#4a688a"/>
+          <rect x="220" y="85"  width="380" height="18" fill="none" stroke="#4a688a"/>
+          <rect x="240" y="60"  width="340" height="18" fill="none" stroke="#4a688a"/>
+        </g>
+        <g fill="#cde3ff" font-size="12" text-anchor="middle">
+          <text x="410" y="174">Inaccessible</text>
+          <text x="410" y="149">Mahlo</text>
+          <text x="410" y="124">Measurable</text>
+          <text x="410" y="99">Strong</text>
+          <text x="410" y="74">Supercompact</text>
+        </g>
+        <text x="410" y="200" fill="#9fb7d3" font-size="12" text-anchor="middle">Increasing consistency strength &mdash; new axioms, new horizons</text>
+      </svg>
+      <div class="cap">Figure 4 &mdash; A schematic &ldquo;tower&rdquo; of large cardinal axioms by strength.</div>
+    </div>
+
     <h3>Why it matters</h3>
     <ul class="list">
-      <li><strong>In ZFC:</strong> Banach&ndash;Tarski holds; CH undecidable; no definable well-order of &Ropf;.</li>
+      <li><strong>In ZFC:</strong> Banach&ndash;Tarski holds; CH undecidable; no definable well-order of &Ropf; known.</li>
       <li><strong>In ZF+DC+AD:</strong> CH false; all sets measurable; BT fails.</li>
-      <li><strong>With large cardinals:</strong> Hierarchies of infinity extend beyond Cantor&rsquo;s ladder.</li>
+      <li><strong>With large cardinals:</strong> Hierarchies of infinity extend beyond Cantor&rsquo;s ladder and guide new results.</li>
     </ul>
     <p class="remark">The frontier is not a proof, but a choice: which axioms to adopt.</p>
   </section>
@@ -148,14 +276,25 @@
       <li>Banach &amp; Tarski (1924). Sur la décomposition des ensembles de points.</li>
       <li>Gödel, K. (1940). Consistency of AC and GCH.</li>
       <li>Cohen, P. (1963). Independence of CH.</li>
+      <li>Jech, T. <em>Set Theory</em>; Kanamori, A. <em>The Higher Infinite</em>.</li>
     </ul>
   </section>
 
   <footer>
     <div class="wrap">
-      © 2025 Tristan White — choice.plnt.earth. Single-file HTML. No trackers.
+      © 2025 Tristan White — PLNT • Infinity mini-site. Single-file HTML. No trackers.
     </div>
   </footer>
 </main>
+
+<script>
+  // Highlight the current nav item based on data-page (set per page).
+  (function(){
+    var pg = document.documentElement.getAttribute('data-page') || '';
+    var map = { cantor: 'nav-cantor', choice: 'nav-choice', banach: 'nav-banach' };
+    var id = map[pg];
+    if(id){ var el = document.getElementById(id); if(el){ el.classList.add('active'); el.setAttribute('aria-current','page'); } }
+  })();
+</script>
 </body>
 </html>
