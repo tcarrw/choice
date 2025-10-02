@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Axiom of Choice & Consequences — choice.plnt.earth</title>
-<meta name="description" content="Axiom of Choice (AC), its equivalents, consequences, and the Banach–Tarski paradox. Single-file HTML.">
+<meta name="description" content="Axiom of Choice (AC), its equivalents, consequences, Banach–Tarski, and open frontiers. Single-file HTML.">
 <style>
   :root{
     --bg:#0B0F19; --ink:#E6EAF2; --muted:#94A3B8; --line:rgba(255,255,255,.12);
@@ -20,19 +20,18 @@
   .meta{font-size:14px;color:var(--muted)}
   .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin:18px 0}
   h2{margin:22px 0 10px 0;font-size:22px}
+  h3{margin:18px 0 8px 0;font-size:18px}
   .theorem{background:#0c182e;border:1px solid #10203e;border-radius:10px;padding:14px}
   .equiv{border-left:3px solid var(--accent2);padding:8px 12px;background:rgba(125,211,252,.06);margin:10px 0}
   .proof{border-left:3px solid var(--accent);padding:8px 12px;background:rgba(164,232,255,.06);margin:10px 0}
   .remark{color:#7dd3fc;font-style:italic;margin-top:8px}
-  .fig{background:#0b1426;border:1px solid #132243;border-radius:12px;padding:14px;margin:12px 0}
-  .fig .cap{color:var(--muted);font-size:14px;margin-top:6px}
   .list{margin:.2rem 0 0 1rem}
   .comet{height:6px;background:linear-gradient(90deg,rgba(164,232,255,.25),rgba(125,211,252,.05) 70%,transparent)}
   footer{color:var(--muted);font-size:14px;padding:28px 0;border-top:1px solid var(--line)}
   @media print {
     header,.comet{display:none!important}
     body{background:#fff;color:#000}
-    .card,.fig{border:1px solid #ccc;background:#fff;break-inside:avoid}
+    .card{border:1px solid #ccc;background:#fff;break-inside:avoid}
   }
 </style>
 </head>
@@ -40,7 +39,7 @@
 <header>
   <div class="wrap">
     <div class="title">Axiom of Choice (AC)</div>
-    <p class="subtitle">Equivalents, Consequences, and the Banach&ndash;Tarski Paradox</p>
+    <p class="subtitle">Equivalents, Consequences, Banach&ndash;Tarski, and Future Frontiers</p>
     <p class="meta">choice.plnt.earth &mdash; October 2025</p>
     <div class="comet"></div>
   </div>
@@ -49,7 +48,7 @@
 <main class="wrap">
   <section class="card">
     <h2>Abstract</h2>
-    <p>The Axiom of Choice (AC) asserts: for any family of nonempty sets, there exists a choice function selecting one element from each. AC is independent of ZF but accepted in ZFC. Its equivalents include the Well-Ordering Theorem and Zorn&rsquo;s Lemma. Its consequences include Hamel bases, algebraic closures, non-measurable sets, and the Banach&ndash;Tarski paradox. Symbols here are HTML-escaped (&forall;, &exists;, &in;, &subseteq;, &empty;, &ne;, &aleph;).</p>
+    <p>The Axiom of Choice (AC) asserts: for any family of nonempty sets, there exists a choice function selecting one element from each. AC is independent of ZF but accepted in ZFC. Its equivalents include the Well-Ordering Theorem and Zorn&rsquo;s Lemma. Its consequences include Hamel bases, algebraic closures, non-measurable sets, and the Banach&ndash;Tarski paradox. Symbols are HTML-escaped (&forall;, &exists;, &in;, &subseteq;, &empty;, &ne;, &aleph;).</p>
   </section>
 
   <section class="card">
@@ -59,8 +58,9 @@
       <li><a href="#equivalents">2. Equivalents</a></li>
       <li><a href="#consequences">3. Consequences</a></li>
       <li><a href="#independence">4. Independence &amp; Fragments</a></li>
-      <li><a href="#banach-tarski">5. Banach&ndash;Tarski Paradox (&Ropf;<sup>3</sup>)</a></li>
+      <li><a href="#banach-tarski">5. Banach&ndash;Tarski Paradox</a></li>
       <li><a href="#controversies">6. Controversies</a></li>
+      <li><a href="#next-problems">7. Next Problems &amp; Frontiers</a></li>
       <li><a href="#refs">References</a></li>
     </ul>
   </section>
@@ -123,14 +123,31 @@
     <p>AC is widely accepted for its utility, but it allows nonconstructive existence and paradoxical outcomes. Constructivist and intuitionist schools often reject it or use weaker fragments.</p>
   </section>
 
+  <section id="next-problems" class="card">
+    <h2>7. Next Problems &amp; Frontiers</h2>
+    <p>Some of the deepest unsolved problems are independent of ZFC, meaning they cannot be decided by the current axioms. The &ldquo;solutions&rdquo; involve proposing new axioms or alternative frameworks.</p>
+    <div class="equiv"><strong>Continuum Hypothesis (CH).</strong> Is there a set with |&Nopf;| &lt; |X| &lt; |&Ropf;|? Gödel and Cohen proved CH is independent of ZFC.</div>
+    <div class="equiv"><strong>Definable Well-Orders of &Ropf;.</strong> AC guarantees a well-order, but no explicit definition is known in ZFC. Open in descriptive set theory.</div>
+    <div class="equiv"><strong>Determinacy Axioms (AD).</strong> Rejecting AC and adopting AD (&ldquo;every infinite game is determined&rdquo;) yields a world where all sets of reals are measurable and BT fails.</div>
+    <div class="equiv"><strong>Large Cardinals.</strong> Strong axioms of infinity (measurable, supercompact, etc.) extend ZFC and settle many questions indirectly. Which large cardinal axioms are &ldquo;true&rdquo; remains open.</div>
+    <h3>Why it matters</h3>
+    <ul class="list">
+      <li><strong>In ZFC:</strong> Banach&ndash;Tarski holds; CH undecidable; no definable well-order of &Ropf;.</li>
+      <li><strong>In ZF+DC+AD:</strong> CH false; all sets measurable; BT fails.</li>
+      <li><strong>With large cardinals:</strong> Hierarchies of infinity extend beyond Cantor&rsquo;s ladder.</li>
+    </ul>
+    <p class="remark">The frontier is not a proof, but a choice: which axioms to adopt.</p>
+  </section>
+
   <section id="refs" class="card">
     <h2>References</h2>
     <ul>
-      <li>Cantor, G. (1895–97). Beiträge zur Begründung der transfiniten Mengenlehre.</li>
+      <li>Cantor, G. (1895–97). <em>Beiträge zur Begründung der transfiniten Mengenlehre</em>.</li>
       <li>Zermelo, E. (1904). Beweis, dass jede Menge wohlgeordnet werden kann.</li>
       <li>Zorn, M. (1935). A remark on method in transfinite algebra.</li>
-      <li>Banach &amp; Tarski (1924). Sur la décomposition des ensembles de points en parties respectivement congruentes.</li>
-      <li>Gödel, K. (1940). The Consistency of AC and GCH.</li>
+      <li>Banach &amp; Tarski (1924). Sur la décomposition des ensembles de points.</li>
+      <li>Gödel, K. (1940). Consistency of AC and GCH.</li>
+      <li>Cohen, P. (1963). Independence of CH.</li>
     </ul>
   </section>
 
